@@ -41,7 +41,7 @@ jobs:
           secret_access_key: ${{ secrets.SECRETAPIKEY }}
           bucket: infraredclips
           file: output1.mp4
-          destination: 'public'
+          destination: 'output.mp4'
       - name: Remove output files
         run: |
             rm output.mp4 output1.mp4

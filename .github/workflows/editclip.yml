@@ -36,7 +36,7 @@ jobs:
       - name: Upload to Cloudflare R2 Storage
         run: |
            curl -X PUT "https://api.cloudflare.com/client/v4/accounts/c3d0463944e717492aaeae4f2dfdd184/r2/buckets/infraredclips/objects/output.mp4" \
-           -H "Authorization: 0cf0d70e2ecdcc6035d26025d364e09c 39f3558a2a2f94ae6c4643971ffd0e2640e4e8ff5475e8def5725177d488135a" \
+           -H "Authorization: Bearer 0cf0d70e2ecdcc6035d26025d364e09c 39f3558a2a2f94ae6c4643971ffd0e2640e4e8ff5475e8def5725177d488135a" \
            -H "Content-Type: video/mp4" \
            --data-binary "@output1.mp4"
       - name: Remove output files

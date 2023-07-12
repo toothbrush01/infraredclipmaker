@@ -28,7 +28,7 @@ jobs:
           sudo apt-get install -y ffmpeg
       - name: Download section of video
         run: |
-          yt-dlp -o output.mp4 -f 'bv*[ext=mp4][height=720]+ba' --download-sections "*${{ github.event.inputs.startTime }}-${{ github.event.inputs.endTime }}" ${{ github.event.inputs.videoUrl }}
+          yt-dlp -o output.mp4 -f 22 --download-sections "*${{ github.event.inputs.startTime }}-${{ github.event.inputs.endTime }}" ${{ github.event.inputs.videoUrl }}
       - name: Run script
         run: |
           chmod +x ./clipmaker.sh

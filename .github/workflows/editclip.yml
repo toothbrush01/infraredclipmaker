@@ -34,14 +34,14 @@ jobs:
           chmod +x ./clipmaker.sh
           ./clipmaker.sh "${{ github.event.inputs.arg1 }}" 
       - name: Upload file to R2
-       uses: magicwallet/r2-upload@main
-       with:
-       endpoint: c3d0463944e717492aaeae4f2dfdd184.r2.cloudflarestorage.com
-       access_key_id: d5b4507bd940a941e10b7803a842e69a
-       secret_access_key: 46f367d9f01cc39d2f6ca0ef6db333ee89d7feac126219f7d74552bb9963a7f5
-       bucket: infraredclips
-       file: output1.mp4
-       destination: '/public'
+        uses: magicwallet/r2-upload@main
+        with:
+          endpoint: c3d0463944e717492aaeae4f2dfdd184.r2.cloudflarestorage.com
+          access_key_id: d5b4507bd940a941e10b7803a842e69a
+          secret_access_key: 46f367d9f01cc39d2f6ca0ef6db333ee89d7feac126219f7d74552bb9963a7f5
+          bucket: infraredclips
+          file: output1.mp4
+          destination: '/public'
       - name: Remove output files
         run: |
             rm output.mp4 output1.mp4

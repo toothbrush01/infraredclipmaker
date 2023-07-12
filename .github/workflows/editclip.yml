@@ -32,11 +32,11 @@ jobs:
           ./clipmaker.sh "${{ github.event.inputs.arg1 }}" 
       - name: Upload to Cloudflare R2 Storage
         run: |
-           curl -X PUT "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/r2/buckets/$BUCKET_NAME/objects/output.mp4" \
-           -H "Authorization: Bearer $API_TOKEN" \
+           curl -X PUT "https://api.cloudflare.com/client/v4/accounts/c3d0463944e717492aaeae4f2dfdd184/r2/buckets/infraredclips/objects/output.mp4" \
+           -H "Authorization: Bearer de3ad1541cf32e452b319dadd318588a12821b83582c3951ecab9573315" \
            -H "Content-Type: video/mp4" \
            --data-binary "@output.mp4"
       - name: Remove output files
         run: |
-            rm output.mp4 outputcropped.mp4
+            rm output.mp4 output1.mp4
          

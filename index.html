@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Trigger Workflow</title>
+  </head>
+  <body>
+    <h1>Trigger Workflow</h1>
+    <button id="trigger-workflow-button">Trigger Workflow</button>
+
+    <script>
+      async function triggerWorkflow(owner, repo, workflowId, inputs, token) {
+        const response = await fetch(
+          `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowId}/dispatches`,
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/vnd.github.v3+json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              ref: 'main',
+              inputs,
+            }),
+          }
+        );
+        return response.ok;
+      }
+
+      document
+        .getElementById('trigger-workflow-button')
+        .addEventListener('click', async () => {
+          const owner = 'toothbrush01';
+          const repo = 'your-repo';
+          const workflowId = 'your-workflow-id';
+          const inputs = {
+            videoUrl: 'https://www.youtube.com/watch?v=VIDEO_ID',
+            startTime: '10',
+            endTime: '20',
+            arg1: 'value1',
+            arg2: 'value2',
+          };
+          const token = 'your-personal-access-token';
+
+          const success = await triggerWorkflow(owner, repo, workflowId, inputs, token);
+          if (success) {
+            console.log('Workflow triggered successfully');
+          } else {
+            console.error('Failed to trigger workflow');
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Trigger Workflow</title>
+    <title>Trigger GitHub Action</title>
   </head>
   <body>
-    <h1>Trigger Workflow</h1>
     <button id="trigger-workflow-button">Trigger Workflow</button>
 
     <script>
@@ -26,10 +25,56 @@
         return response.ok;
       }
 
+      async function waitForWorkflowCompletion(owner, repo, workflowId, token) {
+        let runId;
+        while (true) {
+          const runsResponse = await fetch(
+            `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowId}/runs`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const runsData = await runsResponse.json();
+          runId = runsData.workflow_runs[0].id;
+          if (runsData.workflow_runs[0].status === 'completed') {
+            break;
+          }
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+        }
+
+        // Get the artifacts for the completed workflow run
+        const artifactsResponse = await fetch(
+          `https://api.github.com/repos/${owner}/${repo}/actions/runs/${runId}/artifacts`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const artifactsData = await artifactsResponse.json();
+
+        // Download the artifact
+        const artifactUrl = artifactsData.artifacts[0].archive_download_url;
+        const downloadResponse = await fetch(artifactUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const blob = await downloadResponse.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = '[output_filename]';
+        document.body.appendChild(a);
+        a.click();
+      }
+
       document
         .getElementById('trigger-workflow-button')
         .addEventListener('click', async () => {
-          const owner = 'toothbrush01';
+          const owner = 'your-username-or-org';
           const repo = 'your-repo';
           const workflowId = 'your-workflow-id';
           const inputs = {
@@ -44,6 +89,7 @@
           const success = await triggerWorkflow(owner, repo, workflowId, inputs, token);
           if (success) {
             console.log('Workflow triggered successfully');
+            await waitForWorkflowCompletion(owner, repo, workflowId, token);
           } else {
             console.error('Failed to trigger workflow');
           }

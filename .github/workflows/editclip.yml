@@ -41,7 +41,7 @@ jobs:
           secret_access_key: 46f367d9f01cc39d2f6ca0ef6db333ee89d7feac126219f7d74552bb9963a7f5
           bucket: infraredclips
           file: output1.mp4
-          destination: '/public'
+          destination: 'public'
       - name: Remove output files
         run: |
             rm output.mp4 output1.mp4
